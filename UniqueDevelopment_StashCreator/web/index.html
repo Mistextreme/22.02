@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stash Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app" class="hidden">
+        <div class="container">
+            <div class="header">
+                <h1><i class="fas fa-box"></i> Stash Admin Panel</h1>
+                <div class="header-actions">
+                    <!--  Language feature
+                    <select id="langSelect" class="lang-select" onchange="setLanguage(this.value)">
+                        <option value="en">English</option>
+                    </select>
+                    -->
+                    <button class="close-btn" onclick="closeUI()"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            
+            <div class="content">
+                <div class="sidebar">
+                    <button class="tab-btn active" data-tab="list"><i class="fas fa-list"></i> Lista Stash-eva</button>
+                    <button class="tab-btn" data-tab="create"><i class="fas fa-plus"></i> Kreiraj Stash</button>
+                </div>
+                
+                <div class="main-content">
+                    <div id="list-tab" class="tab-content active">
+                        <div class="search-bar">
+                            <input type="text" id="searchInput" placeholder="Pretrazi stash-eve..." oninput="filterStashes()">
+                        </div>
+                        <div id="stashList" class="stash-list">
+                        </div>
+                    </div>
+                    
+                    <div id="create-tab" class="tab-content">
+                        <form id="createForm" class="stash-form">
+                            <h2>Kreiraj Novi Stash</h2>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="create_stash_id">Stash ID</label>
+                                    <input type="text" id="create_stash_id" required placeholder="npr. policija_ostava">
+                                </div>
+                                <div class="form-group">
+                                    <label for="create_label">Label</label>
+                                    <input type="text" id="create_label" required placeholder="npr. Policija Ostava">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="create_slots">Slots</label>
+                                    <input type="number" id="create_slots" value="100" min="1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="create_weight">Weight</label>
+                                    <input type="number" id="create_weight" value="30000" min="1">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="create_code">Sifra</label>
+                                    <input type="text" id="create_code" required placeholder="Unesite sifru">
+                                </div>
+                                <div class="form-group">
+                                    <label for="create_rotation">Rotacija</label>
+                                    <input type="number" id="create_rotation" value="0" step="0.1">
+                                </div>
+                            </div>
+                            
+                            <div class="coords-section">
+                                <h3>Koordinate <button type="button" class="btn-small" onclick="getPlayerCoords('create')"><i class="fas fa-crosshairs"></i> Moja Pozicija</button></h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="create_coords_x">X</label>
+                                        <input type="number" id="create_coords_x" step="0.0001" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="create_coords_y">Y</label>
+                                        <input type="number" id="create_coords_y" step="0.0001" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="create_coords_z">Z</label>
+                                        <input type="number" id="create_coords_z" step="0.0001" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="coords-section">
+                                <h3>Velicina Zone</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="create_size_x">X</label>
+                                        <input type="number" id="create_size_x" value="0.6" step="0.1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="create_size_y">Y</label>
+                                        <input type="number" id="create_size_y" value="1.9" step="0.1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="create_size_z">Z</label>
+                                        <input type="number" id="create_size_z" value="2.0" step="0.1">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="create_debug">
+                                <label for="create_debug">Debug Mode</label>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Kreiraj Stash</button>
+                        </form>
+                    </div>
+                    
+                    <div id="editModal" class="modal hidden">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Izmeni Stash</h2>
+                                <button class="close-btn" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+                            </div>
+                            <form id="editForm" class="stash-form">
+                                <input type="hidden" id="edit_stash_id">
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit_label">Label</label>
+                                        <input type="text" id="edit_label" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_code">Sifra</label>
+                                        <input type="text" id="edit_code" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit_slots">Slots</label>
+                                        <input type="number" id="edit_slots" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_weight">Weight</label>
+                                        <input type="number" id="edit_weight" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_rotation">Rotacija</label>
+                                        <input type="number" id="edit_rotation" step="0.1">
+                                    </div>
+                                </div>
+                                
+                                <div class="coords-section">
+                                    <h3>Koordinate <button type="button" class="btn-small" onclick="getPlayerCoords('edit')"><i class="fas fa-crosshairs"></i> Moja Pozicija</button></h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="edit_coords_x">X</label>
+                                            <input type="number" id="edit_coords_x" step="0.0001" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit_coords_y">Y</label>
+                                            <input type="number" id="edit_coords_y" step="0.0001" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit_coords_z">Z</label>
+                                            <input type="number" id="edit_coords_z" step="0.0001" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="coords-section">
+                                    <h3>Velicina Zone</h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="edit_size_x">X</label>
+                                            <input type="number" id="edit_size_x" step="0.1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit_size_y">Y</label>
+                                            <input type="number" id="edit_size_y" step="0.1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit_size_z">Z</label>
+                                            <input type="number" id="edit_size_z" step="0.1">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group checkbox-group">
+                                    <input type="checkbox" id="edit_debug">
+                                    <label for="edit_debug">Debug Mode</label>
+                                </div>
+                                
+                                <div class="modal-actions">
+                                    <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Sacuvaj</button>
+                                    <button type="button" class="btn-secondary" onclick="closeEditModal()">Otkazi</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
