@@ -1,0 +1,40 @@
+{
+    "dialog_title": "Stash",
+    "dialog_description": "Enter password",
+
+    "notify_title": "Stash Password",
+    "notify_description": "You entered wrong password",
+    "notify_no_permission": "You don't have permission to access admin panel",
+    "notify_success": "Success",
+    "notify_error": "Error",
+    "too_far": "You are too far from the stash",
+
+    "stash_id_exists": "A stash with that ID already exists",
+    "stash_created": "Stash created successfully",   
+    "stash_create_error": "Error creating stash",
+    "stash_updated": "Stash updated successfully",
+    "stash_update_error": "Error updating stash",
+    "stash_deleted": "Stash deleted successfully",
+    "stash_delete_error": "Error deleting stash",
+
+
+    "unknown_stash": "Unknown Stash",
+    "stash_opened": "Stash Opened",
+    "player": "Player",
+    "stash": "Stash",
+    "stash_id": "Stash ID",
+    "stash_open_fail": "Stash Open Failed",
+
+    "admin_action_logged": "Admin Stash Action",
+    "admin": "Admin",
+    "identifier": "Identifier",
+    "action": "Action",
+    "data": "Data",
+    "create": "CREATE",
+    "update": "UPDATE",
+    "delete": "DELETE",
+    "teleport": "TELEPORT",
+    "view": "VIEW",
+
+    "keybind_description": "Open Stash Admin Panel"
+}
